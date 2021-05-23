@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import CSS_COLOR_NAMES from './colors.js';
 import reportWebVitals from './reportWebVitals';
-import { MapContainer, useMapEvents, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, Polyline, TileLayer, Marker } from 'react-leaflet';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardColumns } from 'react-bootstrap';
 import ChatRoom from './ChatRoom.js'
@@ -12,7 +13,8 @@ const io = require("socket.io-client");
 const socket = io('wss://tarea-3-websocket.2021-1.tallerdeintegracion.cl', {
   path: '/flights'
 });
- socket.emit("FLIGHTS")
+
+socket.emit("FLIGHTS")
 socket.onAny((event, ...args) => {
   console.log(`got ${event}`);
 });
@@ -22,20 +24,44 @@ socket.onAny((event, ...args) => {
 // });
 
 const Markers = () =>  {
-  const [position, setPosition] = React.useState([30, 30]);
+  const [flights, setFlights] = React.useState([]);
+  socket.on("FLIGHTS", data => {
+    setFlights(oldArray => [...oldArray, data]);
+  });
+  const [position, setPosition] = React.useState({"code": "", "position": [30, 30]});
   socket.on("POSITION", data => {
-    console.log(data);
-    setPosition(data.position);
+    setPosition(data);
   });
   return (
-      <Marker position={position}/>);
+    <ol>
+    {flights.map((flight, i) => (
+      flight.map((data,index) => (
+        position.code === data.code ? <Marker position={position.position}/> : null
+        ))))}
+    </ol>
+      );
 };
+
+
+const DrawLines = () => {
+  const [flights, setFlights] = React.useState([]);
+  socket.on("FLIGHTS", data => {
+    setFlights(oldArray => [...oldArray, data]);
+  });
+  return (
+    <ol>
+    {flights.map((flight, i) => (
+      flight.map((data,index) => ( 
+        <Polyline positions={[data.origin, data.destination]} pathOptions={{color: CSS_COLOR_NAMES[index], dashArray: '5, 5'}}/>
+        ))))}
+    </ol>
+     );
+}
  
 
 const Flights = () =>  {
   const [flights, setFlights] = React.useState([]);
   socket.on("FLIGHTS", data => {
-    console.log(data);
     setFlights(oldArray => [...oldArray, data]);
   });
   return (
@@ -65,6 +91,15 @@ const Flights = () =>  {
     ))))}
     </CardColumns> )}
 
+// const FlightData = () => {
+//   const [flights, setFlights] = React.useState([]);
+//   socket.on("FLIGHTS", data => {
+//     setFlights(oldArray => [...oldArray, data]);
+//   });
+//   return (
+//     <div></div>
+//   )
+// }
 
 ReactDOM.render(
   <React.StrictMode>
@@ -76,7 +111,8 @@ ReactDOM.render(
           <Card.Body> 
           <div className="leaflet-container">
           <MapContainer center={[30.5, 10.5]} zoom={2} scrollWheelZoom={false}>
-            {/* <Markers /> */}
+            <Markers />
+            <DrawLines />
               <TileLayer
                 // attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -99,7 +135,7 @@ ReactDOM.render(
           <Card.Header>Información de los vuelos</Card.Header>
           <Card.Body> 
             <Flights />
-          {/* <button onClick={Flights}>
+          {/* <button onClick={ socket.emit("FLIGHTS") }>
             Get Info
             </ button> */}
           </Card.Body>

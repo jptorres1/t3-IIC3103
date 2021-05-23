@@ -41,11 +41,13 @@
 .my-message {
     background-color: #3158a2;
     margin-left: auto;
+    font-size: 10px;
 }
 
 .received-message {
     background-color: #3f4042;
     margin-right: auto;
+    font-size: 10px;
 }
 
 .send-message-button {

@@ -28,7 +28,7 @@ const ChatRoom = () => {
                 message.name === nickname ? "my-message" : "received-message"
               }`}
             >
-              {message.name} ({message.date}): {message.message}
+              {message.name} ({Date(message)}): {message.message}
             </li>
           ))}
         </ol>
