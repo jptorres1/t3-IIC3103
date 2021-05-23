@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { MapContainer, Polyline, TileLayer, Marker } from 'react-leaflet';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardColumns } from 'react-bootstrap';
-import ChatRoom from './ChatRoom.js'
+import ChatRoom from './ChatRoom.js';
+import * as L from "leaflet";
 // import FlightRoom from './FlightRoom.js'
 
 const io = require("socket.io-client");
@@ -32,11 +33,12 @@ const Markers = () =>  {
   socket.on("POSITION", data => {
     setPosition(data);
   });
+
   return (
     <ol>
     {flights.map((flight, i) => (
       flight.map((data,index) => (
-        position.code === data.code ? <Marker position={position.position}/> : null
+        position.code === data.code ? <Marker position={position.position} icon={L.icon({iconUrl: 'airplane.svg.png', iconSize: [20, 20]})}/> : null
         ))))}
     </ol>
       );
