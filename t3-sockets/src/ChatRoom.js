@@ -3,17 +3,17 @@ import React from "react";
 import "./ChatRoom.css";
 import useChat from "./useChat";
 
-const ChatRoom = (props) => {
-  const { roomId } = 1; // Gets roomId from URL
-  const { messages, sendMessage } = useChat(roomId); // Creates a websocket and manages messaging
+const ChatRoom = () => {
+  const { messages, sendMessage } = useChat(); // Creates a websocket and manages messaging
   const [newMessage, setNewMessage] = React.useState(""); // Message to be sent
-
+  const nickname = "Top Gun";
+  
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);
   };
 
   const handleSendMessage = () => {
-    sendMessage(newMessage);
+    sendMessage(newMessage, nickname);
     setNewMessage("");
   };
 
@@ -21,14 +21,14 @@ const ChatRoom = (props) => {
     <div className="chat-room-container">
       <div className="messages-container">
         <ol className="messages-list">
-          {messages.map((message, i) => (
+          {messages.map((message, i) => (            
             <li
               key={i}
               className={`message-item ${
-                message.ownedByCurrentUser ? "my-message" : "received-message"
+                message.name === nickname ? "my-message" : "received-message"
               }`}
             >
-              {message.body}
+              {message.name} ({message.date}): {message.message}
             </li>
           ))}
         </ol>
