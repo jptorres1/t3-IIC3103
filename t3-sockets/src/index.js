@@ -3,13 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import CSS_COLOR_NAMES from './colors.js';
 import reportWebVitals from './reportWebVitals';
-import { MapContainer, Polyline, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, Polyline, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardColumns } from 'react-bootstrap';
 import ChatRoom from './ChatRoom.js';
 import * as L from "leaflet";
 import airplane from './airplane.svg.png'
-// import FlightRoom from './FlightRoom.js'
+
 
 const io = require("socket.io-client");
 const socket = io('wss://tarea-3-websocket.2021-1.tallerdeintegracion.cl', {
@@ -32,11 +32,31 @@ const Markers = () =>  {
     <ol>
     {flights.map((flight, i) => (
       flight.map((data,index) => (
-        position.code === data.code ? <Marker position={position.position} icon={L.icon({iconUrl: airplane, iconSize: [20, 20]})}/> : null
+        position.code === data.code ? <Marker position={position.position} icon={L.icon({iconUrl: airplane, iconSize: [20, 20]})}>
+          <Popup>{data.code}</Popup>
+        </Marker> : null
         ))))}
     </ol>
       );
 };
+
+// const Traits = () =>  {
+//   const [positions, setPosition] = React.useState([]);
+
+//   const [flights, setFlights] = React.useState([]);
+//   socket.on("FLIGHTS", data => {
+//     setFlights(oldArray => [...oldArray, data]);
+//   });
+
+//   socket.on("POSITION", data => {
+//     setPosition(oldArray => [...oldArray, data]);
+//   });
+//   return (
+//     <ol>
+//     {positions.map((flight_position, i) => (
+//       <Circle center={flight_position.position} radius={10} pathOptions={{color: 'white'}}/>))}
+//     </ol> );
+// };
 
 
 const DrawLines = () => {
@@ -150,33 +170,3 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-
-// return (
-      //   <Card border="secondary" style={{ width: '15rem' }}>
-
-      //     <Card.Header>Vuelo {data.code}</Card.Header>
-      //     <Card.Body>
-      //     <Card.Text>
-      //       Origen: {data.origin}
-      //     </Card.Text>
-      //     <Card.Text>
-      //       Destino: {data.destination}
-      //     </Card.Text>
-      //     <Card.Text>
-      //       Avión: {data.plane}
-      //     </Card.Text>
-      //     <Card.Text>
-      //       Asientos: {data.seats}
-      //     </Card.Text>
-      //     </Card.Body>
-      //   </Card>
-      // )
-
-
-
-// {"code": "A087", "origin": "Santiago", "destination": "Balmaceda", 
-//                                                 "plane": "LAN81", "seats": 2,
-//                                                 "passengers": [{"name": "Juan Torres", "age": 23}, {"name": "Pablo Torres", "age": 24}]},
-//                                                 {"code": "A087", "origin": "Santiago", "destination": "Balmaceda", 
-//                                                 "plane": "LAN81", "seats": 2,
-//                                                 "passengers": [{"name": "Juan Torres", "age": 23}, {"name": "Pablo Torres", "age": 24}]}

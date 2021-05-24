@@ -6,11 +6,15 @@ import useChat from "./useChat";
 const ChatRoom = () => {
   const { messages, sendMessage } = useChat(); // Creates a websocket and manages messaging
   const [newMessage, setNewMessage] = React.useState(""); // Message to be sent
-  const nickname = "Top Gun";
+  const [nickname, setNickname] = React.useState("");
   
   const handleNewMessageChange = (event) => {
     setNewMessage(event.target.value);
   };
+
+  const handleNickname = (event) => {
+    setNickname(event.target.value);
+  }
 
   const handleSendMessage = () => {
     sendMessage(newMessage, nickname);
@@ -42,6 +46,15 @@ const ChatRoom = () => {
       <button onClick={handleSendMessage} className="send-message-button">
         Send
       </button>
+
+      <br /><br /><br />
+      <b className="nickname-text">Nickname</b>
+      <textarea
+        value={nickname}
+        onChange={handleNickname}
+        placeholder="Escribe tu nickname acá"
+        className="nickname-field"
+      />
     </div>
   );
 };
