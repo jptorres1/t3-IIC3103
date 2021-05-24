@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, CardColumns } from 'react-bootstrap';
 import ChatRoom from './ChatRoom.js';
 import * as L from "leaflet";
+import airplane from './airplane.svg.png'
 // import FlightRoom from './FlightRoom.js'
 
 const io = require("socket.io-client");
@@ -16,13 +17,6 @@ const socket = io('wss://tarea-3-websocket.2021-1.tallerdeintegracion.cl', {
 });
 
 socket.emit("FLIGHTS")
-socket.onAny((event, ...args) => {
-  console.log(`got ${event}`);
-});
-
-// socket.on("CHAT", data => {
-//   console.log(data);
-// });
 
 const Markers = () =>  {
   const [flights, setFlights] = React.useState([]);
@@ -38,7 +32,7 @@ const Markers = () =>  {
     <ol>
     {flights.map((flight, i) => (
       flight.map((data,index) => (
-        position.code === data.code ? <Marker position={position.position} icon={L.icon({iconUrl: 'airplane.svg.png', iconSize: [20, 20]})}/> : null
+        position.code === data.code ? <Marker position={position.position} icon={L.icon({iconUrl: airplane, iconSize: [20, 20]})}/> : null
         ))))}
     </ol>
       );
