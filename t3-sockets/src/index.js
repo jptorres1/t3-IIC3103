@@ -87,6 +87,7 @@ const Flights = () =>  {
     ))))}
     </CardColumns> )}
 
+
 // const FlightData = () => {
 //   const [flights, setFlights] = React.useState([]);
 //   socket.on("FLIGHTS", data => {
@@ -130,10 +131,10 @@ ReactDOM.render(
         <Card border="secondary" style={{ width: '60rem' }}>
           <Card.Header>Información de los vuelos</Card.Header>
           <Card.Body> 
-            <Flights />
           {/* <button onClick={ socket.emit("FLIGHTS") }>
             Get Info
             </ button> */}
+            <Flights />
           </Card.Body>
         </Card>
         </div>

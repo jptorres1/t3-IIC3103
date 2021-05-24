@@ -13,7 +13,7 @@ const useChat = () => {
     
     // Creates a WebSocket connection
     socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
-      path: "/flights",
+      path: "/flights"
     });
     
     // Listens for incoming messages
@@ -26,14 +26,14 @@ const useChat = () => {
     return () => {
       socketRef.current.disconnect();
     };
-  });
+  }, []);
 
   // Sends a message to the server that
   // forwards it to all users in the same room
   const sendMessage = (messageBody, nickname) => {
     socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
-      message: messageBody,
-      name: nickname
+      name: nickname,
+      message: messageBody
     });
   };
 

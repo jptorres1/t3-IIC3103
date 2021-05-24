@@ -28,7 +28,7 @@ const ChatRoom = () => {
                 message.name === nickname ? "my-message" : "received-message"
               }`}
             >
-              {message.name} ({Date(message)}): {message.message}
+              {message.name} ({(new Date(message.date)).toLocaleString()}): {message.message}
             </li>
           ))}
         </ol>
